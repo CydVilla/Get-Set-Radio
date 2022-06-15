@@ -1,93 +1,107 @@
-import React, { Component } from "react";
-// import Particles from "react-particles-js";
-import "./App.css";
-import Navigation from "./components/Navigation";
-import Signin from "./components/SignIn";
-import Register from "./components/Register";
-import Home from "./components/Home";
+import { Card, Tab, Tabs } from "@blueprintjs/core"
+import { useCallback, useContext, useEffect, useState } from "react"
+import { UserContext } from "./components/context/UserContext"
+import Loader from "./components/Loader"
+import Login from "./components/Login"
+import Register from "./components/Register"
+import Welcome from "./components/Welcome"
+import Player from "./components/Player"
+import './App.css';
 
-// import Logo from "./Logo/Logo";
-
-// const particlesOptions = {
-//   particles: {
-//     number: {
-//       value: 80,
-//       density: {
-//         enable: true,
-//         value_area: 800,
-//       }
-//     }
-//   }
-// };
-
-const initialState = {
-  input: "",
-  imageUrl: "",
-  box: {},
-  route: "signin",
-  isSignedIn: false,
-  user: {
-    id: "",
-    name: "",
-    email: "",
-    entries: 0,
-    joined: ""
-  }
-};
-
-class App extends Component {
-  constructor() {
-    super();
-    this.state = initialState;
-  }
-
-  loadUser = (data) => {
-    this.setState({
-      user: {
-        id: data.id,
-        name: data.name,
-        email: data.email,
-        entries: data.entries,
-        joined: data.joined
-      }
-    });
-  };
-
-  onRouteChange = (route) => {
-    if (route === "signout") {
-      this.setState(initialState);
-    } else if (route === "home") {
-      this.setState({ isSignedIn: true });
+const App = () => {
+  const [currentTab, setCurrentTab] = useState("login")
+  const [userContext, setUserContext] = useContext(UserContext)
+  const [currentSongIndex,setCurrentSongIndex] = useState(0) 
+  const [nextSongIndex,setNextSongIndex] = useState(currentSongIndex + 1);
+  const [songs,setSongs] = useState([
+    {
+        "title": "$tricky_sister",
+        "artist": "Hideki Naganuma",
+        "album": "Air Gear OST",
+        "track": "1",
+        "year": "2004",
+        "img_src": "/song_art/tricky_sister_art.jpg",
+        "src": "/songs/tricky_sister.mp3"
+  },
+    {
+      "title": "Fly Like a Butterfly",
+      "artist": "SEGA",
+      "album": "Jet Set Radio OST",
+      "track": "2",
+      "year": "2001",
+      "img_src": "/song_art/tricky_sister_art.jpg",
+      "src": "/songs/Jet Set Radio Future - Fly Like a Butterfly.mp3"
     }
-    this.setState({ route: route });
-  };
+])
+ 
+  const verifyUser = useCallback(() => {
+    fetch(process.env.REACT_APP_API_ENDPOINT + "users/refreshToken", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    }).then(async response => {
+      if (response.ok) {
+        const data = await response.json()
+        setUserContext(oldValues => {
+          return { ...oldValues, token: data.token }
+        })
+      } else {
+        setUserContext(oldValues => {
+          return { ...oldValues, token: null }
+        })
+      }
+      // call refreshToken every 5 minutes to renew the authentication token.
+      setTimeout(verifyUser, 5 * 60 * 1000)
+    })
+  }, [setUserContext])
 
-  render() {
-    const { isSignedIn, route } = this.state;
-    return (
-      <div className="App">
-        {/* <Particles className="particles" params={particlesOptions} /> */}
-        <Navigation
-          isSignedIn={isSignedIn}
-          onRouteChange={this.onRouteChange}
-        />
-        {route === "home" ? (
-          <div>
-               <Home
-              onInputChange={this.onInputChange}
-            />
-          </div>
-        ) : route === "signin" ? (
-          <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-        ) : (
-          <Register
-            loadUser={this.loadUser}
-            onRouteChange={this.onRouteChange}
-          />
-        )}
-      </div>
-    );
-  }
+  useEffect(() => {
+    verifyUser()
+  }, [verifyUser])
+
+  /**
+   * Sync logout across tabs
+   */
+  const syncLogout = useCallback(event => {
+    if (event.key === "logout") {
+      // If using react-router-dom, you may call history.push("/")
+      window.location.reload()
+    }
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener("storage", syncLogout)
+    return () => {
+      window.removeEventListener("storage", syncLogout)
+    }
+  }, [syncLogout])
+
+  useEffect(()=>{
+    setNextSongIndex(()=>{
+    if (currentSongIndex + 1 >songs.length - 1 ){
+      return 0;
+    } else{
+      return currentSongIndex + 1;
+    }
+  });
+  },[currentSongIndex])
+
+  return userContext.token === null ? (
+    <Card elevation="1">
+      <Tabs id="Tabs" onChange={setCurrentTab} selectedTabId={currentTab}>
+        <Tab id="login" title="Login" panel={<Login />} />
+        <Tab id="register" title="Register" panel={<Register />} />
+        <Tabs.Expander />
+      </Tabs>
+    </Card>
+  ) : userContext.token ? (
+    <div>
+      <Welcome/>
+      <Player currentSongIndex={currentSongIndex} setCurrentSongIndex={setCurrentSongIndex} nextSongIndex={nextSongIndex} songs={songs} />
+    </div>
+  ) : (
+    <Loader />
+  )
 }
 
-export default App;
+export default App

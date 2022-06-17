@@ -1,10 +1,8 @@
-//Player.js
-
 import React, { useState, useRef, useEffect } from "react";
 import PlayerDetails from "./PlayerDetails";
 import PlayerControls from "./PlayerControls";
 
-function Player(props) {
+const Player = (props) => {
   const audioElement = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -60,13 +58,14 @@ function Player(props) {
             <b>{props.songs[props.nextSongIndex].artist}</b>
             {/* &nbsp; from album
             &nbsp; */}
-            {/* <b>{props.songs[props.nextSongIndex].album}</b> */}
+            {<b>{props.songs[props.nextSongIndex].album}</b> }
           </p>
         </div>
       </p>
       <div className="music-player">
         <audio
-          src={props.songs[props.currentSongIndex].src}
+          // src={props.songs[props.currentSongIndex].src}
+          src="https://jetsetradio.s3.amazonaws.com/today.mp3"
           ref={audioElement}
         ></audio>
         <PlayerDetails song={props.songs[props.currentSongIndex]} />

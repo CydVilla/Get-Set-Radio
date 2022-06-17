@@ -10,7 +10,6 @@ const Welcome = () => {
     fetch(process.env.REACT_APP_API_ENDPOINT + "users/me", {
       method: "GET",
       credentials: "include",
-      // Pass authentication token as bearer token in header
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userContext.token}`,
@@ -23,9 +22,6 @@ const Welcome = () => {
         })
       } else {
         if (response.status === 401) {
-          // Edge case: when the token has expired.
-          // This could happen if the refreshToken calls have failed due to network error or
-          // User has had the tab open from previous day and tries to click on the Fetch button
           window.location.reload()
         } else {
           setUserContext(oldValues => {
@@ -37,7 +33,6 @@ const Welcome = () => {
   }, [setUserContext, userContext.token])
 
   useEffect(() => {
-    // fetch only when user details are not present
     if (!userContext.details) {
       fetchUserDetails()
     }
@@ -59,8 +54,6 @@ const Welcome = () => {
   }
 
   const refetchHandler = () => {
-    // set details to undefined so that spinner will be displayed and
-    // fetchUserDetails will be invoked from useEffect
     setUserContext(oldValues => {
       return { ...oldValues, details: undefined }
     })
@@ -82,9 +75,9 @@ const Welcome = () => {
                 " " + userContext.details.lastName}
             </strong>!
           </p>
-          <p>
+          {/* <p>
             Your reward points: <strong>{userContext.details.points}</strong>
-          </p>
+          </p> */}
         </div>
         <div className="user-actions">
           <Button
@@ -93,7 +86,7 @@ const Welcome = () => {
             minimal
             intent="primary"
           />
-          <Button text="Refetch" intent="primary" onClick={refetchHandler} />
+          {/* <Button text="Refetch" intent="primary" onClick={refetchHandler} /> */}
         </div>
       </div>
     </Card>

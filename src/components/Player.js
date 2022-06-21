@@ -3,6 +3,7 @@ import PlayerDetails from "./PlayerDetails";
 import PlayerControls from "./PlayerControls";
 
 const Player = (props) => {
+  console.log(props, 'you')
   const audioElement = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -64,8 +65,8 @@ const Player = (props) => {
       </p>
       <div className="music-player">
         <audio
-          // src={props.songs[props.currentSongIndex].src}
-          src="https://jetsetradio.s3.amazonaws.com/today.mp3"
+          src={props.songs[props.currentSongIndex].src}
+          // src="https://jetsetradio.s3.amazonaws.com/music/today.mp3"
           ref={audioElement}
         ></audio>
         <PlayerDetails song={props.songs[props.currentSongIndex]} />
@@ -103,8 +104,6 @@ const Player = (props) => {
             </li>
           </ul>
         </div>
-
-        {/* <h4>Lofi Music Player React </h4> */}
       </div>
     </>
   );

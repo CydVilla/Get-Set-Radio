@@ -19,38 +19,16 @@ const columns = [
   { field: "year", headerName: "Year", width: 150, editable: true },
 ];
 
-export const UserEdit = () => {
+export const UserSongs = () => {
   const [checkboxSelection, setCheckboxSelection] = React.useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [columnData, setColumnData] = useState([]);
   const [{ token }] = useContext(UserContext);
 
-  const handleDeleteSelected = () => {
-    fetch(process.env.REACT_APP_API_ENDPOINT + "users/trash", {
-      method: "DELETE",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        ids: selectedRows,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setTableData((prev) => {
-          const newState = prev.filter((row) => !selectedRows.includes(row.id));
-          return newState;
-        });
-        setSelectedRows([]);
-      });
-  };
-
   useEffect(() => {
     (async () => {
-      fetch(process.env.REACT_APP_API_ENDPOINT + "users/myUploads", {
+      fetch(process.env.REACT_APP_API_ENDPOINT + "users/allUploads", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -105,8 +83,6 @@ export const UserEdit = () => {
             });
         }}
       />
-      <Button variant="contained" sx={{mt : '4px'}} onClick={handleDeleteSelected}>Delete Selected</Button>
-      {/* <button onClick={}>Refresh</button> */}
     </div>
   );
 };

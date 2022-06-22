@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import PlayerDetails from "./PlayerDetails";
 import PlayerControls from "./PlayerControls";
 
 const Player = (props) => {
-  console.log(props, 'you')
   const audioElement = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -57,9 +56,8 @@ const Player = (props) => {
           <p>
             <b>{props.songs[props.nextSongIndex].title} </b>&nbsp; by &nbsp;
             <b>{props.songs[props.nextSongIndex].artist}</b>
-            {/* &nbsp; from album
-            &nbsp; */}
-            {<b>{props.songs[props.nextSongIndex].album}</b> }
+            {/* &nbsp; uploaded by <b>{props.songs.user}</b> */}
+            {/* {<b>{props.songs[props.nextSongIndex].album}</b> } */}
           </p>
         </div>
       </p>
@@ -107,5 +105,5 @@ const Player = (props) => {
       </div>
     </>
   );
-}
+};
 export default Player;

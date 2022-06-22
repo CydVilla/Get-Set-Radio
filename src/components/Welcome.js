@@ -64,7 +64,7 @@ const Welcome = () => {
   ) : !userContext.details ? (
     <Loader />
   ) : (
-    <Card elevation="1">
+    <Card className="welcome" elevation="1">
       <div className="user-details">
         <div>
           <p>
@@ -75,9 +75,9 @@ const Welcome = () => {
                 " " + userContext.details.lastName}
             </strong>!
           </p>
-          {/* <p>
-            Your reward points: <strong>{userContext.details.points}</strong>
-          </p> */}
+          <p>
+            {/* Your reward points: <strong>{userContext.details.points}</strong> */}
+          </p>
         </div>
         <div className="user-actions">
           <Button
@@ -86,7 +86,7 @@ const Welcome = () => {
             minimal
             intent="primary"
           />
-          {/* <Button text="Refetch" intent="primary" onClick={refetchHandler} /> */}
+          {/* <Button text="Refresh" intent="primary" onClick={refetchHandler} /> */}
         </div>
       </div>
     </Card>

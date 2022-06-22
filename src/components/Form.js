@@ -122,7 +122,7 @@ const Form = () => {
         <Button
           intent="primary"
           disabled={isSubmitting}
-          text={`${isSubmitting ? "Submitting" : "Submit"}`}
+          text={`${isSubmitting ? "Rad" : "Submit"}`}
           fill
           type="submit"
         />

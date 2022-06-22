@@ -1,3 +1,4 @@
+import React, { Component } from 'react'
 import { Card, Tab, Tabs } from "@blueprintjs/core"
 import { useCallback, useContext, useEffect, useState } from "react"
 import { UserContext, UserProvider } from "./components/context/UserContext"
@@ -9,13 +10,13 @@ import Player from "./components/Player"
 import Form from "./components/Form"
 import {UserEdit} from "./components/UserEdit"
 import ParticlesBg from 'particles-bg'
-import React, { Component } from 'react'
+import {UserSongs} from "./components/UserSongs"
 // import Header from "./components/Header"
 import './App.css';
 
 const App = () => {
-  const [currentTab, setCurrentTab] = useState("login")
   const [userContext, setUserContext] = useContext(UserContext)
+  const [currentTab, setCurrentTab] = useState("login")
   const [currentSongIndex,setCurrentSongIndex] = useState(0) 
   const [nextSongIndex,setNextSongIndex] = useState(currentSongIndex + 1)
   const [loading, setLoading] = useState(true);
@@ -53,6 +54,7 @@ useEffect(() => {
     setSongs(previousState => {
       const newSongs = res.map(song => {
         return  {
+          "user": song.user,
           "title": song.title,
           "artist": song.artist,
           "album": "",
@@ -91,19 +93,19 @@ useEffect(() => {
     verifyUser()
   }, [verifyUser])
 
-  // const syncLogout = useCallback(event => {
-  //   if (event.key === "logout") {
-  //     //history.push("/")
-  //     window.location.reload()
-  //   }
-  // }, [])
+  const syncLogout = useCallback(event => {
+    if (event.key === "logout") {
+      //history.push("/")
+      window.location.reload()
+    }
+  }, [])
 
-  // useEffect(() => {
-  //   window.addEventListener("storage", syncLogout)
-  //   return () => {
-  //     window.removeEventListener("storage", syncLogout)
-  //   }
-  // }, [syncLogout])
+  useEffect(() => {
+    window.addEventListener("storage", syncLogout)
+    return () => {
+      window.removeEventListener("storage", syncLogout)
+    }
+  }, [syncLogout])
 
   useEffect(()=>{
     setNextSongIndex(()=>{
@@ -154,8 +156,14 @@ useEffect(() => {
       }
     };
 
+    useEffect(() => {
+    if (userContext?.details?.firstName) {
+      setCurrentTab("Player")
+    }
+    },[userContext?.details?.firstName])
 
-  
+    console.log(currentTab)
+    console.log(userContext)
 
   return ( 
     loading ?
@@ -182,7 +190,8 @@ useEffect(() => {
         <Tab id="Player" title="Player" panel={ <Player currentSongIndex={currentSongIndex} setCurrentSongIndex={setCurrentSongIndex} nextSongIndex={nextSongIndex} songs={songs} />
 } />
         <Tab id="edit" title="See Music" panel={<UserEdit/>} />
-        <Tab id="form" title="Form" panel={<Form/>} />
+        <Tab id="form" title="Upload Music" panel={<Form/>} />
+        <Tab id="get" title="See All Music" panel={<UserSongs/>} />
         <Tabs.Expander />
       </Tabs>
     </Card>

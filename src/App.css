@@ -403,7 +403,7 @@ input {
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.834);
-  background-image: url("/Users/cvilla/Desktop/Programming/future-radio/loading.gif");
+  background-image: url("./loading.gif");
   background-size: cover;
   background-repeat: no-repeat;
 }

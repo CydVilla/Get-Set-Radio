@@ -106,7 +106,6 @@ export const UserEdit = () => {
         }}
       />
       <Button variant="contained" sx={{mt : '4px'}} onClick={handleDeleteSelected}>Delete Selected</Button>
-      {/* <button onClick={}>Refresh</button> */}
     </div>
   );
 };

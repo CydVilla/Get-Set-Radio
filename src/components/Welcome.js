@@ -86,7 +86,6 @@ const Welcome = () => {
             minimal
             intent="primary"
           />
-          {/* <Button text="Refresh" intent="primary" onClick={refetchHandler} /> */}
         </div>
       </div>
     </Card>

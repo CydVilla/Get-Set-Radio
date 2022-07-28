@@ -2,9 +2,6 @@ import { Button, FormGroup, InputGroup } from "@blueprintjs/core";
 import React, { useState, useContext } from "react";
 import { UserContext } from "./context/UserContext";
 
-// const MAX_FILE_SIZE_MB = 4;
-// const BYTES_PER_MB = 1048576;
-// const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * BYTES_PER_MB;
 const FILE_UPLOAD_PREFIX_REGEX = /data[^,]*,/;
 
 
@@ -17,21 +14,14 @@ const Form = () => {
   const [art, setArt] = useState({fileName: '', file: ''});
   const [audio, setAudio] = useState({fileName: '', file: ''});
   const [{token}] = useContext(UserContext)
-  console.log(token)
 
   const fileUploadHandler = (event, name) => {
     const reader = new FileReader();
     const targetFile =
       event && event.target && event.target.files && event.target.files[0];
     let uploadedFile;
-    // if (targetFile && targetFile.size > MAX_FILE_SIZE_BYTES) {
-    //   // this.setState({fileSizeError: true});
-    //   console.log(MAX_FILE_SIZE_BYTES, 'error')
-    //   return;
-    // }
     reader.onload = (fileReaderEvent) => {
       uploadedFile = fileReaderEvent.target.result;
-      // uploadedFile = uploadedFile.replace(FILE_UPLOAD_PREFIX_REGEX, "");
     };
     reader.onloadend = () => {
       if (name == "art") {

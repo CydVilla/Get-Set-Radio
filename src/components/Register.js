@@ -21,7 +21,11 @@ const Register = () => {
     fetch(process.env.REACT_APP_API_ENDPOINT + "users/signup", {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+       "Content-Type": "application/json",
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+     },
       body: JSON.stringify({ firstName, lastName, username: email, password }),
     })
       .then(async (response) => {

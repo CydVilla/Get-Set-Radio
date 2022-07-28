@@ -19,10 +19,7 @@ const Login = () => {
     fetch(process.env.REACT_APP_API_ENDPOINT + "users/login", {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json",
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-     },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: email, password }),
     })
       .then(async (response) => {

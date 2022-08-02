@@ -4,16 +4,15 @@ import { UserContext } from "./context/UserContext";
 
 const FILE_UPLOAD_PREFIX_REGEX = /data[^,]*,/;
 
-
 const Form = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
   const [year, setYear] = useState("");
-  const [art, setArt] = useState({fileName: '', file: ''});
-  const [audio, setAudio] = useState({fileName: '', file: ''});
-  const [{token}] = useContext(UserContext)
+  const [art, setArt] = useState({ fileName: "", file: "" });
+  const [audio, setAudio] = useState({ fileName: "", file: "" });
+  const [{ token }] = useContext(UserContext);
 
   const fileUploadHandler = (event, name) => {
     const reader = new FileReader();
@@ -25,9 +24,9 @@ const Form = () => {
     };
     reader.onloadend = () => {
       if (name == "art") {
-        setArt({fileName: targetFile.name, file: uploadedFile});
+        setArt({ fileName: targetFile.name, file: uploadedFile });
       } else {
-        setAudio({fileName: targetFile.name, file: uploadedFile});
+        setAudio({ fileName: targetFile.name, file: uploadedFile });
       }
     };
     reader.readAsDataURL(targetFile);
@@ -39,11 +38,13 @@ const Form = () => {
     setError("");
 
     const genericErrorMessage = "Something went wrong! Please try again later.";
-    fetch(process.env.REACT_APP_API_ENDPOINT +  "users/upload", {
+    fetch(process.env.REACT_APP_API_ENDPOINT + "users/upload", {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`
-    },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ title, artist, art, year, audio }),
     })
       .then((response) => {
@@ -56,7 +57,7 @@ const Form = () => {
           } else {
             setError(genericErrorMessage);
           }
-        } 
+        }
       })
       .catch((error) => {
         setIsSubmitting(false);

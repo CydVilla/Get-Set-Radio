@@ -24,6 +24,6 @@ const PlayerControls = (props) => {
       </button>
     </div>
   );
-}
+};
 
 export default PlayerControls;

@@ -18,6 +18,6 @@ const PlayerDetails = (props) => {
       </div>
     </div>
   );
-}
+};
 
 export default PlayerDetails;

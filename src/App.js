@@ -9,7 +9,6 @@ import Welcome from "./components/Welcome";
 import Player from "./components/Player";
 import Form from "./components/Form";
 import { UserEdit } from "./components/UserEdit";
-import ParticlesBg from "particles-bg";
 import { UserSongs } from "./components/UserSongs";
 // import Header from "./components/Header"
 import "./App.css";
@@ -132,36 +131,36 @@ const App = () => {
       setLoading(false);
     }, 1);
   };
-  let config = {
-    num: [4, 7],
-    rps: 0.1,
-    radius: [5, 40],
-    life: [1.5, 3],
-    v: [2, 3],
-    tha: [-40, 40],
-    // body: "./img/icon.png", // Whether to render pictures
-    // rotate: [0, 20],
-    alpha: [0.6, 0],
-    scale: [1, 0.1],
-    position: "center", // all or center or {x:1,y:1,width:100,height:100}
-    color: ["random", "black"],
-    cross: "dead", // cross or bround
-    random: 15, // or null,
-    g: 5, // gravity
-    // f: [2, -1], // force
-    onParticleUpdate: (ctx, particle) => {
-      ctx.beginPath();
-      ctx.rect(
-        particle.p.x,
-        particle.p.y,
-        particle.radius * 2,
-        particle.radius * 2
-      );
-      ctx.fillStyle = particle.color;
-      ctx.fill();
-      ctx.closePath();
-    },
-  };
+  // let config = {
+  //   num: [4, 7],
+  //   rps: 0.1,
+  //   radius: [5, 40],
+  //   life: [1.5, 3],
+  //   v: [2, 3],
+  //   tha: [-40, 40],
+  //   // body: "./img/icon.png", // Whether to render pictures
+  //   // rotate: [0, 20],
+  //   alpha: [0.6, 0],
+  //   scale: [1, 0.1],
+  //   position: "center", // all or center or {x:1,y:1,width:100,height:100}
+  //   color: ["random", "black"],
+  //   cross: "dead", // cross or bround
+  //   random: 15, // or null,
+  //   g: 5, // gravity
+  //   // f: [2, -1], // force
+  //   onParticleUpdate: (ctx, particle) => {
+  //     ctx.beginPath();
+  //     ctx.rect(
+  //       particle.p.x,
+  //       particle.p.y,
+  //       particle.radius * 2,
+  //       particle.radius * 2
+  //     );
+  //     ctx.fillStyle = particle.color;
+  //     ctx.fill();
+  //     ctx.closePath();
+  //   },
+  // };
 
   useEffect(() => {
     if (userContext?.details?.firstName) {
@@ -178,7 +177,6 @@ const App = () => {
     </div>
   ) : userContext.token === null ? (
     <Card elevation="1">
-      <ParticlesBg type="custom" config={config} bg={true} />
       <Tabs id="Tabs" onChange={setCurrentTab} selectedTabId={currentTab}>
         <Tab id="login" title="Login" panel={<Login />} />
         <Tab id="register" title="Register" panel={<Register />} />
